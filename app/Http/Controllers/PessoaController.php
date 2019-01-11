@@ -8,15 +8,9 @@ use DB;
 
 class PessoaController extends Controller
 {
-    public function lista(){
+    public function GetTickets(){
 
-		$tickets = $this->ReadJSON();
-
-		//ordena json por data
-		usort($tickets, function($a, $b) { 
-		    return $a["CustomerName"] > $b["CustomerName"] ? 1 : -1; 
-		});                                                                                                                                                                                        
-
+		$tickets = $this->ReadJSON();                                                                                                                      
 		return view('pessoa',compact('tickets'));
 
 	}
@@ -30,9 +24,9 @@ class PessoaController extends Controller
 
 	}
 
-	function priority() {
-	    $tickets = getTickets();
-	    $termo = 'Reclamação';
+	public function priority() {
+	    $tickets = $this->GetTickets();
+	    $reclama = 'Reclamação';
 	    $reclamacao  = '/' . 'reclamacao' . '/i'; //Padrão a ser encontrado na string $tags
 		$procon      = '/' . 'procon' . '/i';
 		$reclameAqui = '/' . 'reclameAqui' . '/i';
@@ -63,7 +57,7 @@ class PessoaController extends Controller
 	        if (round($datediff / (60 * 60 * 24)) >= 30) {
 	            $ticketPriority = $tickets[$key]["TicketPriority"] = "Alta";
 	        }
-	    }
+		}
 
 	    //Push $ticketPriority element onto the end of array
 	        //array_push($tickets, $ticketPriority);

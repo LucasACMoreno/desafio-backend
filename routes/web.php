@@ -15,5 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/pessoas', 'PessoaController@lista');
+Route::get('/pessoas', 'PessoaController@GetTickets');
 
