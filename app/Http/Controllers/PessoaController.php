@@ -28,12 +28,13 @@ class PessoaController extends Controller
 
 		$tickets = $this->ReadJson();
 
-		$count = 0;
+		$count = [];
 		//SUBJECT
 	    $reclameaqui  = 'reclameAqui';
 		$procon      = 'procon';
-		$reclamacao = 'reclamacao';
-		$resposta = 'RE:';
+		$reclamacao = 'Reclamação';
+		$respostareclamacao = 'RE: Reclamação';
+		$resposta = 'RE: ';
 		//SENDER
 		$customer = 'Customer';
 		$expert = 'Expert';
@@ -42,35 +43,51 @@ class PessoaController extends Controller
 			$interactions = $ticket['Interactions'];
 			$datecreate = $ticket['DateCreate'];
 			$dateupdate = $ticket['DateUpdate'];
+			$count[$key] = 0;
 
 			foreach($interactions as $keyInteractions => $interaction){
 				$subject = $interaction['Subject'];
 				$sender = $interaction['Sender'];
 
 				if (strpos($subject, $reclamacao) !== false) {
-					echo 'Tag'.$reclamacao.'encontrada';
+					echo 'Tag '.$reclamacao.' encontrada +35<br>';
+					$count[$key]+= 35;
 					echo "<br>";
-					$count+= 35;
-				} else  if(strpos($subject, $procon) !== false){
-					echo 'Tag'.$procon.'encontrada';
+				}
+				if(strpos($subject, $respostareclamacao) !== false){
+					echo 'Tag '.$respostareclamacao.' encontrada -20<br>';
+					$count[$key]-= 20;
 					echo "<br>";
-					$count+= 35;
-				} else  if(strpos($subject, $reclameaqui) !== false){
-					echo 'Tag'.$reclameaqui.'encontrada';
+				}
+				if(strpos($subject, $resposta) !== false){
+					echo 'Tag '.$resposta.' encontrada -20<br>';
+					$count[$key]-= 20;
 					echo "<br>";
-					$count+= 35;
-				} else  if(strpos($subject, $resposta) !== false){
-					echo 'Tag'.$reclamacao.'encontrada';
+				}
+				if(strpos($subject, $procon) !== false){
+					echo 'Tag '.$procon.' encontrada +35<br>';
+					$count[$key]+= 35;
 					echo "<br>";
-					$count-= 20;
-				} else  if(strpos($sender, $customer) !== false){
-					echo 'Tag'.$customer.'encontrada';
+				}
+				if(strpos($subject, $reclameaqui) !== false){
+					echo 'Tag '.$reclameaqui.' encontrada +35<br>';
+					$count[$key]+= 35;
 					echo "<br>";
-					$count+=20;
-				} else if(strpos($sender, $expert) !== false){
-					echo 'Tag'.$expert.'encontrada';
+				}
+				if(strpos($subject, $resposta) !== false && strpos($sender, $expert) !== false){
+					echo 'Tag '.$resposta.' encontrada -20<br>';
 					echo "<br>";
-					$count-=15;
+					$count[$key]-= 20;
+				}
+				if(strpos($subject, $resposta) !== false && strpos($sender, $customer) !== false){
+					echo 'Tag '.$resposta.' encontrada +25<br>';
+					echo "<br>";
+					$count[$key]+= 25;
+				}
+				if(strpos($sender, $expert) !== false){
+					echo 'Tag '.$expert.' encontrada -15<br>';
+					$count[$key]-= 15;
+					echo "<br>";
 				}
 			}
 
@@ -79,12 +96,35 @@ class PessoaController extends Controller
 	        $dateDif = $dateI - $dateF;
 
 	        if (round($dateDif / (60 * 60 * 24)) >= 30) {
-	        	$count+=30;	
-	        }	  
+	        	echo 'Tag '.$dateDif.' encontrada +30<br>';
+	        	$count[$key]+=30;	
+	        }	
+	
 
-			return view('teste',compact('count'));
+	        echo '<br>'.$count[$key].'<br>';
+
+			if($count[$key] > 60){
+		        echo "PRIORIDADE ALTA<br>";
+				$ticketPriority['ticket']['ticketPriority'] = 'Prioridade Alta';
+				$fp = fopen(public_path('json/tickets.json'), 'w');
+				fwrite($fp, json_encode($ticketPriority));
+				fclose($fp);		        
+		        //echo "<br><br><br>".$count[$key];
+		        $count[$key] = 0;	
+		    } else{
+		        echo "PRIORIDADE NORMAL<br>";
+		        /*$ticketPriority[]['ticketPriority'] = 'Prioridade Normal';
+		        $fp = fopen(public_path('json/tickets.json'), 'w');
+				fwrite($fp, json_encode($ticketPriority));
+				fclose($fp);*/
+		        //echo "<br><br><br>".$count[$key];
+		        $count[$key] = 0;
+		    }
 		}
+
+
 		
+		return view('teste',compact('count'));
 	}
 
 }
