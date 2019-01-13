@@ -17,3 +17,5 @@ Route::get('/', function () {
 
 Route::get('/pessoas', 'PessoaController@GetTickets');
 
+Route::get('/teste', 'PessoaController@Priority');
+

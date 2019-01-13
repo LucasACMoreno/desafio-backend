@@ -24,48 +24,67 @@ class PessoaController extends Controller
 
 	}
 
-	public function priority() {
-	    $tickets = $this->GetTickets();
-	    $reclama = 'Reclamação';
-	    $reclamacao  = '/' . 'reclamacao' . '/i'; //Padrão a ser encontrado na string $tags
-		$procon      = '/' . 'procon' . '/i';
-		$reclameAqui = '/' . 'reclameAqui' . '/i';
+	public function Priority(){
 
+		$tickets = $this->ReadJson();
 
-	    //Instruction to create priority based on requirements
-	    foreach ($tickets as $key => $value) {
-	        $DateCreate    = $value["DateCreate"];
-	        $DateUpdate    = $value["DateUpdate"];
-	        $Interactions  = $value["Interactions"];
+		$count = 0;
+		//SUBJECT
+	    $reclameaqui  = 'reclameAqui';
+		$procon      = 'procon';
+		$reclamacao = 'reclamacao';
+		$resposta = 'RE:';
+		//SENDER
+		$customer = 'Customer';
+		$expert = 'Expert';
 
-	        foreach ($Interactions as $keychildren => $valuechildren) {
-	            $Subject = $valuechildren["Subject"];
+		foreach($tickets as $key => $ticket){
+			$interactions = $ticket['Interactions'];
+			$datecreate = $ticket['DateCreate'];
+			$dateupdate = $ticket['DateUpdate'];
 
-	            //Checks if the subject contains the word "reclamação"
-	            if (strpos($Subject, $reclamacao) !== false) {
-	                $ticketPriority = $tickets[$key]["TicketPriority"] = "Alta";
-	            } else {
-	                $ticketPriority = $tickets[$key]["TicketPriority"] = "Normal";
-	            }
-	        }
+			foreach($interactions as $keyInteractions => $interaction){
+				$subject = $interaction['Subject'];
+				$sender = $interaction['Sender'];
 
-	        //Checking the difference between the date of submission and the last update
-	        $date1 = strtotime($DateCreate);
-	        $date2 = strtotime($DateUpdate);
-	        $datediff = $date2 - $date1;
+				if (strpos($subject, $reclamacao) !== false) {
+					echo 'Tag'.$reclamacao.'encontrada';
+					echo "<br>";
+					$count+= 35;
+				} else  if(strpos($subject, $procon) !== false){
+					echo 'Tag'.$procon.'encontrada';
+					echo "<br>";
+					$count+= 35;
+				} else  if(strpos($subject, $reclameaqui) !== false){
+					echo 'Tag'.$reclameaqui.'encontrada';
+					echo "<br>";
+					$count+= 35;
+				} else  if(strpos($subject, $resposta) !== false){
+					echo 'Tag'.$reclamacao.'encontrada';
+					echo "<br>";
+					$count-= 20;
+				} else  if(strpos($sender, $customer) !== false){
+					echo 'Tag'.$customer.'encontrada';
+					echo "<br>";
+					$count+=20;
+				} else if(strpos($sender, $expert) !== false){
+					echo 'Tag'.$expert.'encontrada';
+					echo "<br>";
+					$count-=15;
+				}
+			}
 
-	        if (round($datediff / (60 * 60 * 24)) >= 30) {
-	            $ticketPriority = $tickets[$key]["TicketPriority"] = "Alta";
-	        }
+			$dateI = strtotime($datecreate);
+	        $dateF = strtotime($dateupdate);
+	        $dateDif = $dateI - $dateF;
+
+	        if (round($dateDif / (60 * 60 * 24)) >= 30) {
+	        	$count+=30;	
+	        }	  
+
+			return view('teste',compact('count'));
 		}
-
-	    //Push $ticketPriority element onto the end of array
-	        //array_push($tickets, $ticketPriority);
-	    //Returns the array to JSON representation
-	        //$jsonData = json_encode($tickets);
-	    //Write the $jsonData to a tickets.json file
-	        //file_put_contents('tickets.json', $jsonData);
-	    //Este trecho foi todo comentado pois não encontrei um modo de adicionar o elemento ao arquivo json sem "quebrar" sua formatação...
+		
 	}
 
 }
