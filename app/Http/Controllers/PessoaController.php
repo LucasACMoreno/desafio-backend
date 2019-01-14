@@ -33,82 +33,79 @@ class PessoaController extends Controller
 	    $reclameaqui  = 'reclameAqui';
 		$procon      = 'procon';
 		$reclamacao = 'Reclamação';
-		$respostareclamacao = 'RE: Reclamação';
 		$resposta = 'RE: ';
 		//SENDER
 		$customer = 'Customer';
 		$expert = 'Expert';
 
 		foreach($tickets as $key => $ticket){
+
 			$interactions = $ticket['Interactions'];
 			$datecreate = $ticket['DateCreate'];
 			$dateupdate = $ticket['DateUpdate'];
 			$count[$key] = 0;
 
 			foreach($interactions as $keyInteractions => $interaction){
+
 				$subject = $interaction['Subject'];
 				$sender = $interaction['Sender'];
 
-				if (strpos($subject, $reclamacao) !== false) {
-					echo 'Tag '.$reclamacao.' encontrada +35<br>';
+
+				if (strpos($sender, $customer) !== false) {
+					echo 'Tag '.$customer.' encontrada +15<br>';
+					$count[$key]+= 15;
+					echo "<br>";
+				}
+				if (strpos($sender, $expert) !== false) {
+					echo 'Tag '.$expert.' encontrada -5<br>';
+					$count[$key]-= 5;
+					echo "<br>";
+				}
+				if (strpos($subject, $resposta) !== false && strpos($sender, $customer) !== false) {
+					echo 'Tag '.$resposta.' e '.$customer.' encontrada +15<br>';
+					$count[$key]+= 15;
+					echo "<br>";
+				}
+				if (strpos($subject, $resposta) !== false && strpos($sender, $expert) !== false) {
+					echo 'Tag '.$resposta.' e '.$expert.' encontrada -5<br>';
+					$count[$key]-= 5;
+					echo "<br>";
+				}
+				if (strpos($subject, $reclamacao) !== false && strpos($sender, $customer) !== false){
+					echo 'Tag '.$reclamacao.' e '.$customer.' encontrada +35<br>';
 					$count[$key]+= 35;
 					echo "<br>";
 				}
-				if(strpos($subject, $respostareclamacao) !== false){
-					echo 'Tag '.$respostareclamacao.' encontrada -20<br>';
-					$count[$key]-= 20;
+				if (strpos($subject, $reclamacao) !== false && strpos($sender, $expert) !== false){
+					echo 'Tag '.$reclamacao.' e '.$expert.' encontrada -10<br>';
+					$count[$key]-= 10;
 					echo "<br>";
 				}
-				if(strpos($subject, $resposta) !== false){
-					echo 'Tag '.$resposta.' encontrada -20<br>';
-					$count[$key]-= 20;
-					echo "<br>";
-				}
-				if(strpos($subject, $procon) !== false){
-					echo 'Tag '.$procon.' encontrada +35<br>';
-					$count[$key]+= 35;
-					echo "<br>";
-				}
-				if(strpos($subject, $reclameaqui) !== false){
-					echo 'Tag '.$reclameaqui.' encontrada +35<br>';
-					$count[$key]+= 35;
-					echo "<br>";
-				}
-				if(strpos($subject, $resposta) !== false && strpos($sender, $expert) !== false){
-					echo 'Tag '.$resposta.' encontrada -20<br>';
-					echo "<br>";
-					$count[$key]-= 20;
-				}
-				if(strpos($subject, $resposta) !== false && strpos($sender, $customer) !== false){
-					echo 'Tag '.$resposta.' encontrada +25<br>';
-					echo "<br>";
-					$count[$key]+= 25;
-				}
-				if(strpos($sender, $expert) !== false){
-					echo 'Tag '.$expert.' encontrada -15<br>';
-					$count[$key]-= 15;
-					echo "<br>";
-				}
+
 			}
 
-			$dateI = strtotime($datecreate);
-	        $dateF = strtotime($dateupdate);
-	        $dateDif = $dateI - $dateF;
+			$dateI = date("Y-m-d",strtotime($datecreate));
+			$dataInicial = str_replace('-', '/', $dateI);
+	        echo $dataInicial;
+	        $dateF = date("Y-m-d",strtotime($dateupdate));
+	        $dataFinal = str_replace('-', '/', $dateF);
+	        echo '<br>'.$dataFinal;
+	        //$dateDif = ($dataFinal - $dataInicial)/86400;
+	        //echo '<br>'.$dateDif;
 
-	        if (round($dateDif / (60 * 60 * 24)) >= 30) {
-	        	echo 'Tag '.$dateDif.' encontrada +30<br>';
+	        /*if (round($dateDif / (60 * 60 * 24)) >= 30) {
 	        	$count[$key]+=30;	
-	        }	
+	        }*/
 	
 
 	        echo '<br>'.$count[$key].'<br>';
 
-			if($count[$key] > 60){
+			if($count[$key] >= 35){
 		        echo "PRIORIDADE ALTA<br>";
-				$ticketPriority['ticket']['ticketPriority'] = 'Prioridade Alta';
+				/*$ticketPriority['ticket']['ticketPriority'] = 'Prioridade Alta';
 				$fp = fopen(public_path('json/tickets.json'), 'w');
 				fwrite($fp, json_encode($ticketPriority));
-				fclose($fp);		        
+				fclose($fp);		*/        
 		        //echo "<br><br><br>".$count[$key];
 		        $count[$key] = 0;	
 		    } else{
