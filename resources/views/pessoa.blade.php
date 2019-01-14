@@ -12,13 +12,15 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   
 
     </head>
     <body>
             <h2 class="margin-top-0 text-primary">Tickets Info</h2>
             <br>
-                <table id="datatable" class="mdl-data-table">
+                <table id="datatable" class="mdl-data-table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Index</th>
@@ -47,7 +49,10 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>                    
+                </table>  
+
+
+                             
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
@@ -58,6 +63,7 @@
         "info" : false,
         "search" : true,
         "paging": true,
+        "order": [ 6, 'asc' ],
         language: {
             searchPlaceholder: "Search..."
         },          

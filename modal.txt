@@ -1,0 +1,31 @@
+<td class="text-center"><button id ="{{$key}}" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#key{{$key}}"><i class="fas fa-plus"></i></button></td> 
+
+                <!--@foreach ($tickets as $key => $value)                   
+                    <div class="modal fade bd-example-modal-lg" id="key{{$key}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Message</th>
+                                            <th>DateCreate</th>
+                                            <th>Sender</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($value as $keyInteractions => $interaction) 
+                                            <tr class="interaction" id={{$keyInteractions}}>
+                                                {{dd($interaction["Subject"])}}
+                                                <td>{{$interaction["Subject"]}}</td>
+                                                <td>{{$interaction["Message"]}}</td>
+                                                <td>{{$interaction["DateCreate"]}}</td>
+                                                <td>{{$interaction["Sender"]}}</td>                                            
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>                      
+                @endforeach-->
