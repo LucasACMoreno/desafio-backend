@@ -29,6 +29,7 @@
                             <th>CustomerEmail</th>
                             <th>DateCreate</th>
                             <th>DateUpdate</th>
+                            <th>TicketPriority</th>
                         </tr>
                     </thead>
                     <tbody>            
@@ -41,7 +42,8 @@
                                 <td>{{$value["CustomerName"]}}</td>
                                 <td>{{$value["CustomerEmail"]}}</td>
                                 <td>{{$value["DateCreate"]}}</td>
-                                <td>{{$value["DateUpdate"]}}</td>                
+                                <td>{{$value["DateUpdate"]}}</td>  
+                                <td>{{$value["ticketPriority"][0]}}</td>
                             </tr>
                         @endforeach
                     </tbody>
