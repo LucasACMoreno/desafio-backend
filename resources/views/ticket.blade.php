@@ -32,6 +32,7 @@
                             <th>DateCreate</th>
                             <th>DateUpdate</th>
                             <th>TicketPriority</th>
+                            <th>More information</th>
                         </tr>
                     </thead>
                     <tbody>            
@@ -46,13 +47,39 @@
                                 <td>{{$value["DateCreate"]}}</td>
                                 <td>{{$value["DateUpdate"]}}</td>  
                                 <td>{{$value["ticketPriority"][0]}}</td>
+                                <td class="text-center"><button id ="{{$key}}" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#key{{$key}}"><i class="fas fa-plus"></i></button></td> 
                             </tr>
                         @endforeach
                     </tbody>
                 </table>  
 
 
-                             
+                  @foreach ($tickets as $key => $value)                   
+                    <div class="modal fade bd-example-modal-lg" id="key{{$key}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Message</th>
+                                            <th>DateCreate</th>
+                                            <th>Sender</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                        
+                                            <tr>
+                                                <td>{{$value["TicketID"]}}</td>
+                                                <td>{{$value["CategoryID"]}}</td>
+                                                <td>{{$value["CustomerID"]}}</td>
+                                                <td>{{$value["CustomerName"]}}</td>                                           
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>                      
+                @endforeach            
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

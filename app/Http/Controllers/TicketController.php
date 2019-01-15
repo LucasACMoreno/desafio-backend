@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 
 use DB;
 
-class PessoaController extends Controller
+class TicketController extends Controller
 {
     public function GetTickets(){
 
 		$tickets = $this->ReadJSON();                                                                                                                      
-		return view('pessoa',compact('tickets'));
+		return view('ticket',compact('tickets'));
 
 	}
 
@@ -117,10 +117,5 @@ class PessoaController extends Controller
 				fclose($fp);
 		    }
 		}
-
-
-		
-		return view('teste',compact('count'));
 	}
-
 }

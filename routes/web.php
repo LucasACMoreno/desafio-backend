@@ -15,7 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/pessoas', 'PessoaController@GetTickets');
-
-Route::get('/teste', 'PessoaController@Priority');
+Route::get('/ticket', 'TicketController@GetTickets');
 
